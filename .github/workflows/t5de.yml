@@ -26,7 +26,7 @@ jobs:
           pip install -r requirements.txt
       - name: Patch Installer
         run: |
-          python main.py $ENV:VERSION
+          python main.py
       - name: Install NSIS
         run: |
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
@@ -37,5 +37,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: T5DE-"${{ ENV:VERSION }}".exe
-          path: T5DE-"${{ ENV:VERSION }}".exe
+          name: T5DE-"${{ env.VERSION }}".exe
+          path: T5DE-"${{ env.VERSION }}".exe
