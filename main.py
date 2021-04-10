@@ -17,7 +17,7 @@ from patch import ClientAppPatch, AccountPatch, ProductLoaderPatch, WindowsPatch
 PATH = os.path.dirname(sys.argv[0])
 BASE_URL = 'https://static-akm.imvu.com/imvufiles/installers/InstallIMVU_{}.exe'
 CLIENT_PATH = '{}/IMVUClient'.format(os.getenv('APPDATA'))
-VERSION = os.environ['VERSION']
+VERSION = os.getenv('VERSION')
 PATCHES = [AccountPatch(), ClientAppPatch(), ProductLoaderPatch(), WindowsPatch(), SessionWindowPatch()]
 
 
