@@ -544,3 +544,7 @@ pyvenv.cfg
 .venv
 pip-selfcheck.json
 
+### Custom
+IMVUClient
+*.exe
+
