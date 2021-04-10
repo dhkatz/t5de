@@ -17,7 +17,7 @@ from patch import ClientAppPatch, AccountPatch, ProductLoaderPatch, WindowsPatch
 PATH = os.path.dirname(sys.argv[0])
 BASE_URL = 'https://static-akm.imvu.com/imvufiles/installers/InstallIMVU_{}.exe'
 CLIENT_PATH = '{}/IMVUClient'.format(os.getenv('APPDATA'))
-VERSION = '539.14'
+VERSION = os.environ['VERSION']
 PATCHES = [AccountPatch(), ClientAppPatch(), ProductLoaderPatch(), WindowsPatch(), SessionWindowPatch()]
 
 
@@ -34,7 +34,7 @@ def download():
 
 def install():
     print('INSTALLING: IMVU {}'.format(VERSION))
-    autogui.open('InstallIMVU_539.14.exe', setActive=False)
+    autogui.open('{}/InstallIMVU_{}.exe'.format(PATH, VERSION), setActive=False)
     autogui.setWindow('IMVU Setup')
     autogui.click('Install', 0, 4)
     print('SLEEPING: 15 SECONDS...')
