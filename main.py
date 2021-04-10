@@ -58,7 +58,7 @@ def install():
 def copy():
     print('COPYING: {}'.format(CLIENT_PATH))
     if not os.path.isdir(os.path.join(PATH, 'IMVUClient')):
-        shutil.copytree(CLIENT_PATH, os.path.join(PATH, 'IMVUClient'))
+        shutil.copytree(CLIENT_PATH, os.path.join(PATH, 'IMVUClient'), ignore=shutil.ignore_patterns('*.lock'))
 
 
 def extract():
