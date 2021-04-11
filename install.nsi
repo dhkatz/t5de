@@ -17,7 +17,7 @@
   OutFile "${APPNAME}-${IMVU_VERSION}.exe"
   Unicode true
 
-  InstallDir "$LOCALAPPDATA\${APPNAME}"
+  InstallDir "$LOCALAPPDATA\IMVUClient"
   InstallDirRegKey HKCU "Software\${APPNAME}" ""
 
   RequestExecutionLevel user

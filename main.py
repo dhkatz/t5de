@@ -11,13 +11,17 @@ import time
 from uncompyle6 import decompile_file
 from py_compile import compile
 
-from patch import ClientAppPatch, AccountPatch, ProductLoaderPatch, WindowsPatch, SessionWindowPatch
+from patch import ClientAppPatch, AccountPatch, ProductLoaderPatch, WindowsPatch, SessionWindowPatch, \
+    ShopTogetherPatch, ShopTogetherPatch2, InviteTimePatch, AvatarSafetyPatch, ChatRoomSearchPatch
 
 PATH = os.getcwd()
 BASE_URL = 'https://static-akm.imvu.com/imvufiles/installers/InstallIMVU_{}.exe'
 CLIENT_PATH = '{}/IMVUClient'.format(os.getenv('APPDATA'))
 VERSION = os.getenv('VERSION')
-PATCHES = [AccountPatch(), ClientAppPatch(), ProductLoaderPatch(), WindowsPatch(), SessionWindowPatch()]
+PATCHES = [
+    AccountPatch(), ClientAppPatch(), ProductLoaderPatch(), WindowsPatch(), SessionWindowPatch(),
+    ShopTogetherPatch(), ShopTogetherPatch2(), InviteTimePatch(), AvatarSafetyPatch(), ChatRoomSearchPatch()
+]
 
 
 def download():
@@ -66,12 +70,17 @@ def extract():
     with zipfile.ZipFile('{}/IMVUClient/library.zip'.format(PATH), 'r') as zip_file:
         zip_file.extractall('{}/library'.format(PATH))
 
+    print ('EXTRACTING: IMVUCONTENT.jar')
+    with zipfile.ZipFile('{}/IMVUClient/ui/chrome/imvuContent.jar'.format(PATH), 'r') as zip_file:
+        zip_file.extractall('{}/imvuContent'.format(PATH))
+
 
 def decompile():
     for p in PATCHES:
-        print('DECOMPILING: {}'.format(p.file))
-        with open("{}/library/{}.py".format(PATH, p.file), "w") as f:
-            decompile_file("{}/library/{}.pyo".format(PATH, p.file), f)
+        if p.ext == 'py':
+            print('DECOMPILING: {}'.format(p.file))
+            with open("{}/library/{}.py".format(PATH, p.file), "w") as f:
+                decompile_file("{}/library/{}.pyo".format(PATH, p.file), f)
 
 
 def patch():
@@ -80,7 +89,7 @@ def patch():
 
         print('PATCHING: {}'.format(p.file))
 
-        with open("{}/library/{}.py".format(PATH, p.file)) as f:
+        with open("{}/{}/{}.{}".format(PATH, p.dir, p.file, p.ext)) as f:
             source = f.readlines()
 
             i = 0
@@ -97,22 +106,24 @@ def patch():
                 if not found:
                     output.append(line)
 
-        with open("{}/library/{}.py".format(PATH, p.file), "w") as f:
+        with open("{}/{}/{}.{}".format(PATH, p.dir, p.file, p.ext), "w") as f:
             f.writelines(output)
 
 
 def recompile():
     for p in PATCHES:
-        print('COMPILING: {}'.format(p.file))
-        compile('{}/library/{}.py'.format(PATH, p.file), '{}/library/{}.pyo'.format(PATH, p.file), '-o', doraise=True)
+        if p.ext == 'py':
+            print('COMPILING: {}'.format(p.file))
+            compile('{}/library/{}.py'.format(PATH, p.file), '{}/library/{}.pyo'.format(PATH, p.file), '-o', doraise=True)
 
 
 def cleanup():
     for p in PATCHES:
-        print('CLEANING: {}'.format(p.file))
-        filepath = '{}/library/{}.py'.format(PATH, p.file)
-        if os.path.isfile(filepath):
-            os.remove(filepath)
+        if p.ext == 'py':
+            print('CLEANING: {}'.format(p.file))
+            filepath = '{}/library/{}.py'.format(PATH, p.file)
+            if os.path.isfile(filepath):
+                os.remove(filepath)
 
 
 def archive():
@@ -128,12 +139,29 @@ def archive():
 
     print('ARCHIVED: LIBRARY.ZIP')
 
+    print('ARCHIVING: IMVUCONTENT.JAR')
+
+    content_dir = os.path.join(PATH, 'imvuContent')
+
+    with zipfile.ZipFile(os.path.join(PATH, 'imvuContent.jar'), 'w', compression=zipfile.ZIP_STORED) as zip_file:
+        for root, dirs, files in os.walk(content_dir):
+            for filename in files:
+                filepath = os.path.join(root, filename)
+                zip_file.write(filepath, os.path.relpath(filepath, content_dir))
+
+    print('ARCHIVED: IMVUCONTENT.JAR')
+
 
 def replace():
     print('REPLACING: LIBRARY.ZIP')
 
     os.remove(os.path.join(PATH, 'IMVUClient', 'library.zip'))
     shutil.move(os.path.join(PATH, 'library.zip'), os.path.join(PATH, 'IMVUClient'))
+
+    print('REPLACING: IMVUCONTENT.jar')
+
+    os.remove(os.path.join(PATH, 'IMVUClient/ui/chrome', 'imvuContent.jar'))
+    shutil.move(os.path.join(PATH, 'imvuContent.jar'), os.path.join(PATH, 'IMVUClient/ui/chrome'))
 
 
 if __name__ == '__main__':
