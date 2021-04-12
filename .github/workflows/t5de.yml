@@ -31,6 +31,8 @@ jobs:
           scoop install nsis
       - name: Build Installer
         uses: joncloud/makensis-action@v3.3
+        with:
+          script-file: "./scripts/install.nsi"
       - name: Upload Artifact
         uses: actions/upload-artifact@v1.0.0
         with:

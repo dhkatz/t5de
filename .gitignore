@@ -195,7 +195,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+# scripts/
 develop-eggs/
 dist/
 downloads/
@@ -375,7 +375,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+# scripts/
 develop-eggs/
 dist/
 downloads/
