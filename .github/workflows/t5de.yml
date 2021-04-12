@@ -23,7 +23,7 @@ jobs:
           pip install -r requirements.txt
       - name: Patch Installer
         run: |
-          python main.py
+          python -m t5de
       - name: Install NSIS
         run: |
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
