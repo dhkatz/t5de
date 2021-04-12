@@ -7,6 +7,10 @@
 !define APP_VERSION "${IMVU_VERSION}.0.0"
 !define APP_EXE "IMVUClient.exe"
 
+!ifndef OUTDIR
+!define OUTDIR ..
+!endif
+
 !define APP_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 
 ; General
@@ -14,7 +18,7 @@
   Name "${APPNAME}"
   BrandingText "T5DE ${IMVU_VERSION}"
 
-  OutFile "${APPNAME}-${IMVU_VERSION}.exe"
+  OutFile "${OUTDIR}\${APPNAME}-${IMVU_VERSION}.exe"
   Unicode true
 
   InstallDir "$LOCALAPPDATA\IMVUClient"
@@ -89,7 +93,7 @@ Section "${APPNAME}" SecInstall
 
   SetOutPath "$INSTDIR"
 
-  File /nonfatal /r ".\IMVUClient\*"
+  File /nonfatal /r "${OUTDIR}\IMVUClient\*"
 
   WriteUninstaller "$INSTDIR\${APPNAME} Uninstall.exe"
 
