@@ -1,26 +1,18 @@
-class Patch:
-    def __init__(self):
-        self.file = ""
-        self.dir = ""
-        self.ext = ""
-        self.patterns = {}
+import os
+import shutil
+import zipfile
 
-    def apply(self, line, pattern, index, source, output):
-        return index
+from uncompyle6 import decompile_file
+from py_compile import compile as compile_file
+
+from t5de.patches.patch import Patch
 
 
 class LibraryPatch(Patch):
     def __init__(self):
         Patch.__init__(self)
         self.dir = "library"
-        self.ext = "py"
-
-
-class ContentPatch(Patch):
-    def __init__(self):
-        Patch.__init__(self)
-        self.dir = "imvuContent"
-        self.ext = "js"
+        self.ext = ".py"
 
 
 class AccountPatch(LibraryPatch):
@@ -107,71 +99,55 @@ class SessionWindowPatch(LibraryPatch):
         return index + 2
 
 
-class ShopTogetherPatch(ContentPatch):
-    def __init__(self):
-        ContentPatch.__init__(self)
-        self.file = 'dialogs/shop_together_extra_benefits_upsell/ShopTogetherUpsell'
-        self.patterns = {
-            'DISABLE_UPSELL': 'var imvu'
-        }
-
-    def apply(self, line, pattern, index, source, output):
-        output.append(line)
-        output.append("    imvu.call('cancelDialog');\n")
-        return index + 20
+PATCHES = [AccountPatch(), ClientAppPatch(), ProductLoaderPatch(), WindowsPatch(), SessionWindowPatch()]
 
 
-class ShopTogetherPatch2(ContentPatch):
-    def __init__(self):
-        ContentPatch.__init__(self)
-        self.file = 'dialogs/shop_together_upsell/ShopTogetherUpsell'
-        self.patterns = {
-            'DISABLE_UPSELL': 'var imvu'
-        }
+def setup(cwd):
+    print('EXTRACTING: LIBRARY.ZIP')
+    with zipfile.ZipFile('{}/IMVUClient/library.zip'.format(cwd), 'r') as zip_file:
+        zip_file.extractall('{}/library'.format(cwd))
 
-    def apply(self, line, pattern, index, source, output):
-        output.append(line)
-        output.append("    imvu.call('cancelDialog');")
-        return index + 22
+    print(cwd, os.path.join(cwd, 'library'))
 
-
-class InviteTimePatch(ContentPatch):
-    def __init__(self):
-        ContentPatch.__init__(self)
-        self.file = 'dialogs/invited_to_chat/invited_to_chat'
-        self.patterns = {
-            'UPDATE_TIME': r'30 \* 1000'
-        }
-
-    def apply(self, line, pattern, index, source, output):
-        output.append(line.replace('30', '300'))
-        return index
+    for p in PATCHES:
+        print('DECOMPILING: {}'.format(p.file))
+        with open(os.path.join(cwd, p.dir, p.file + p.ext), "w") as f:
+            decompile_file(os.path.join(cwd, p.dir, p.file + '.pyo'), f)
 
 
-class AvatarSafetyPatch(ContentPatch):
-    def __init__(self):
-        ContentPatch.__init__(self)
-        self.file = 'dialogs/avatar_safety/avatarSafety'
-        self.patterns = {
-            'ENABLE_BOOT': r'showBoot',
-            'ENABLE_MUTE': r'showMute'
-        }
-
-    def apply(self, line, pattern, index, source, output):
-        output.append(source[index + 1])
-        return index + 4
+def patches():
+    return PATCHES
 
 
-class ChatRoomSearchPatch(ContentPatch):
-    def __init__(self):
-        ContentPatch.__init__(self)
-        self.file = 'chat_rooms/ChatRoomSearch'
-        self.patterns = {
-            'ENABLE_FILTERS': 'Empty Rooms'
-        }
+def cleanup(cwd):
+    for p in PATCHES:
+        print('COMPILING: {}'.format(p.file))
 
-    def apply(self, line, pattern, index, source, output):
-        output.append(line)
-        output.append("        [_T('Non-Empty Rooms'), '1-10'],\n")
-        output.append("        [_T('1 Person'), '1'],\n")
-        return index
+        compile_file(
+            os.path.join(cwd, p.dir, p.file + p.ext), os.path.join(cwd, p.dir, p.file + '.pyo'), '-o', doraise=True
+        )
+
+    for p in PATCHES:
+        print('CLEANING: {}'.format(p.file))
+        filepath = os.path.join(cwd, 'library', p.file + p.ext)
+        if os.path.isfile(filepath):
+            os.remove(filepath)
+
+    print('ARCHIVING: LIBRARY.ZIP')
+
+    lib_dir = os.path.join(cwd, 'library')
+
+    with zipfile.ZipFile(os.path.join(cwd, 'library.zip'), 'w', compression=zipfile.ZIP_STORED) as zip_file:
+        for root, dirs, files in os.walk(lib_dir):
+            for filename in files:
+                filepath = os.path.join(root, filename)
+                zip_file.write(filepath, os.path.relpath(filepath, lib_dir))
+
+    print('ARCHIVED: LIBRARY.ZIP')
+
+    print('REPLACING: LIBRARY.ZIP')
+
+    os.remove(os.path.join(cwd, 'IMVUClient', 'library.zip'))
+    shutil.move(os.path.join(cwd, 'library.zip'), os.path.join(cwd, 'IMVUClient'))
+
+    shutil.rmtree(os.path.join(cwd, 'library'))
