@@ -99,15 +99,28 @@ class SessionWindowPatch(LibraryPatch):
         return index + 2
 
 
-PATCHES = [AccountPatch(), ClientAppPatch(), ProductLoaderPatch(), WindowsPatch(), SessionWindowPatch()]
+class BugReportPatch(LibraryPatch):
+    def __init__(self):
+        LibraryPatch.__init__(self)
+        self.file = 'main/bugzilla_submit'
+        self.patterns = {
+            'DISABLE_BUGREPORTS': r'submitImvuBug'
+        }
+
+    def apply(self, line, pattern, index, source, output):
+        output.append(line)
+        output.append('    pass')
+        return index + 41
+
+
+PATCHES = [AccountPatch(), ClientAppPatch(), ProductLoaderPatch(), WindowsPatch(), SessionWindowPatch(),
+           BugReportPatch()]
 
 
 def setup(cwd):
     print('EXTRACTING: LIBRARY.ZIP')
     with zipfile.ZipFile('{}/IMVUClient/library.zip'.format(cwd), 'r') as zip_file:
         zip_file.extractall('{}/library'.format(cwd))
-
-    print(cwd, os.path.join(cwd, 'library'))
 
     for p in PATCHES:
         print('DECOMPILING: {}'.format(p.file))

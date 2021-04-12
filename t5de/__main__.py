@@ -5,7 +5,7 @@ import sys
 
 from . import Patcher
 
-from .patches import librarypatch, contentpatch
+from .patches import librarypatch, contentpatch, checksumpatch
 
 
 def main():
@@ -13,7 +13,7 @@ def main():
         patcher.download()
         patcher.install()
         patcher.copy()
-        patcher.patch(patchers=[librarypatch, contentpatch])
+        patcher.patch(patchers=[librarypatch, contentpatch, checksumpatch])
 
 
 if __name__ == '__main__':
