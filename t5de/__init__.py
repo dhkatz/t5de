@@ -98,6 +98,3 @@ class Patcher:
         executable = os.path.join(self.cwd, 'InstallIMVU_%s.exe' % self.version)
         if os.path.isfile(executable):
             os.remove(executable)
-        client_dir = os.path.join(self.cwd, 'IMVUClient')
-        if os.path.isdir(client_dir):
-            shutil.rmtree(client_dir)
