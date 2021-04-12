@@ -12,6 +12,8 @@ A modified IMVU client that unlocks useful features.
     - Note: Only other users with modified clients will see clothes
     worn this way. Furniture can be seen by mobile users as well.
 * Removed IMVU tracking features
+  - Stops IMVU from fingerprinting your device
+  - Stops crashes from sending reports to IMVU
 * Removed annoying 'Shop Together' upsell ads
 * See AP products regardless of status
 
