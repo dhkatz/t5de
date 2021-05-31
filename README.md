@@ -34,7 +34,8 @@ You can also build the client yourself by cloning the repository.
 
 ```
 python -m pip install -r requirements.txt
-makensis install.nsi
+python -m t5de
+makensis ./scripts/install.nsi
 ```
 
 **Installing**
