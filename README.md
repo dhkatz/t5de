@@ -1,6 +1,7 @@
 # T5DE
 
 ![T5DE Workflow](https://github.com/dhkatz/t5de/actions/workflows/t5de.yml/badge.svg)
+[![](https://dcbadge.vercel.app/api/server/5zkJuKZVTK?style=plastic)](https://discord.gg/5zkJuKZVTK)
 
 A modified IMVU client that unlocks useful features.
 
