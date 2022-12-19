@@ -20,7 +20,7 @@ A modified IMVU client that unlocks useful features.
 
 # Install
 
-Download the latest release from the [Releases]() section.
+Download the latest release from the [Releases](https://github.com/dhkatz/t5de/releases) section.
 
 # Build
 
