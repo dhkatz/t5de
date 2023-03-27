@@ -1,3 +1,3 @@
-import checksumpatch
-import contentpatch
-import librarypatch
+from checksum import *
+from interface import *
+from python import *
