@@ -9,8 +9,8 @@ from . import Client
 
 def main():
     with Client(os.getcwd(), os.getenv('VERSION')) as patcher:
-        # patcher.download()
-        # patcher.install()
+        patcher.download()
+        patcher.install()
         patcher.copy()
         patcher.patch(patchers=[InterfacePatcher, PythonPatcher, ChecksumPatcher])
 
