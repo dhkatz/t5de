@@ -27,4 +27,7 @@ class AvatarCardPatch(InterfacePatch):
             context.write('}\n', indent=3)
             context.write(context.line)
         elif context.pattern == 'AVATAR_CARD_CSS':
+            context.write('#cid {\n')
+            context.write('    -moz-user-select: text;\n')
+            context.write('}\n\n')
             context.write(context.line.replace('span', 'span:not(.no-edit)'))
