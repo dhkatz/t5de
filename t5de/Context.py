@@ -54,7 +54,7 @@ class Context:
         with open(self.path, "w") as f:
             f.writelines(self.output)
 
-    def write(self, text, indent=0):
+    def write(self, text="\n", indent=0):
         """
         Write a line to the output
         :param str text:

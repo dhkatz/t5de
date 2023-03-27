@@ -3,3 +3,4 @@ from ChatRoomSearchPatch import ChatRoomSearchPatch
 from InviteTimePatch import InviteTimePatch
 from ShopTogetherPatch import ShopTogetherPatch
 from AvatarCardPatch import AvatarCardPatch
+from ShopModePatch import ShopModePatch
