@@ -3,17 +3,16 @@
 import os
 import sys
 
-from . import Patcher
-
-from .patches import librarypatch, contentpatch, checksumpatch
+from .patchers import InterfacePatcher, PythonPatcher, ChecksumPatcher
+from . import Client
 
 
 def main():
-    with Patcher(os.getcwd(), os.getenv('VERSION')) as patcher:
-        patcher.download()
-        patcher.install()
+    with Client(os.getcwd(), os.getenv('VERSION')) as patcher:
+        # patcher.download()
+        # patcher.install()
         patcher.copy()
-        patcher.patch(patchers=[librarypatch, contentpatch, checksumpatch])
+        patcher.patch(patchers=[InterfacePatcher, PythonPatcher, ChecksumPatcher])
 
 
 if __name__ == '__main__':
