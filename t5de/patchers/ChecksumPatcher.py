@@ -1,5 +1,6 @@
 import inspect
 import os
+import shutil
 
 from .Patcher import Patcher
 from ..patches import checksum as checksum_patches
@@ -16,8 +17,14 @@ class ChecksumPatcher(Patcher):
         )
 
     def setup(self):
-        pass
+        print('COPYING: CHECKSUM.TXT')
+        shutil.copy(os.path.join(self.cwd, 'IMVUClient', 'checksum.txt'), os.path.join(self.cwd, 'checksum.txt'))
 
     def cleanup(self):
+        print('REPLACING: CHECKSUM.TXT')
+        shutil.copy(os.path.join(self.cwd, 'checksum.txt'), os.path.join(self.cwd, 'IMVUClient', 'checksum.txt'))
+        print('REMOVING: CHECKSUM.TXT')
+        os.remove(os.path.join(self.cwd, 'checksum.txt'))
+
         print('REMOVING: DEVICEFINGERPRINT.EXE')
         os.remove(os.path.join(self.cwd, 'IMVUClient', 'devicefingerprint.exe'))
