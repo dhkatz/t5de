@@ -1,0 +1,4 @@
+from AccountPatch import AccountPatch
+from ClientAppPatch import ClientAppPatch
+from ProductLoaderPatch import ProductLoaderPatch
+from WindowsPatch import WindowsPatch

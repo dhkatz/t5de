@@ -42,3 +42,23 @@ makensis ./scripts/install.nsi
 **Installing**
 
 Run the generated `T5DE-*.exe`
+
+**Development**
+
+**Patches**
+
+The client is modified using a patch system. Patches are stored in the `patches` directory.
+
+There are currently three types of patches:
+
+* `interface` - Patches the interface, any HTML, CSS, or JS files which affect the UI
+* `python` - Patches the actual client Python code, any Python files which affect the client
+* `checksum` - Patches the checksums of the client files, used to bypass the client update system
+
+**Patching**
+
+Writing a patch is as simple as creating a new file in the `patches` directory.
+
+Your patch must inherit from either `InterfacePatch`, `PythonPatch`, or `ChecksumPatch` 
+depending on the type of patch you are writing. You may also inherit from `Patch` if you want to create a custom patch type.
+Theoretically you could even inherit from multiple patch types, but make sure to call `super()` in the correct order.
