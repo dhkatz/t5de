@@ -54,14 +54,17 @@ class Context:
         with open(self.path, "w") as f:
             f.writelines(self.output)
 
-    def write(self, text="\n", indent=0):
+    def write(self, text="\n", indent=0, newline=True):
         """
         Write a line to the output
         :param str text:
         :param int indent:
+        :param bool newline:
         :return:
         """
-        self.output.append("{}{}".format("\t" * indent, text))
+        if newline and not text.endswith("\n"):
+            text += "\n"
+        self.output.append("{}{}".format("    " * indent, text))
 
     def seek(self, index, absolute=False):
         """
