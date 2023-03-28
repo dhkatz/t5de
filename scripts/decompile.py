@@ -29,14 +29,18 @@ if __name__ == '__main__':
 
     print('DECOMPILING: LIBRARY')
 
-    for root, dirs, files in os.walk('{}/library/imvu'.format(cwd)):
-        for compiled in files:
-            print('DECOMPILING: {}'.format(compiled))
-            if compiled.endswith('.pyo'):
-                path = os.path.join(root, os.path.splitext(compiled)[0] + '.py')
-                with open(path, "w") as output:
-                    try:
-                        decompile_file(os.path.join(root, compiled), output, showasm=False)
-                    except Exception as e:
-                        print('SKIPPING: {} (error)'.format(compiled))
-                        continue
+    def decompile(subdir):
+        for root, dirs, files in os.walk('{}/library/{}'.format(cwd, subdir)):
+            for compiled in files:
+                print('DECOMPILING: {}'.format(compiled))
+                if compiled.endswith('.pyo'):
+                    path = os.path.join(root, os.path.splitext(compiled)[0] + '.py')
+                    with open(path, "w") as output:
+                        try:
+                            decompile_file(os.path.join(root, compiled), output, showasm=False)
+                        except Exception as e:
+                            print('SKIPPING: {} (error)'.format(compiled))
+                            continue
+
+    decompile('imvu')
+    decompile('main')
