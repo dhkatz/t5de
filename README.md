@@ -7,7 +7,7 @@ A modified IMVU client that unlocks useful features.
 
 **Features**
 
-* Unlocked `*hiresnob` and `*hiresnobg` in shop
+* Unlocked photo mode (including `*hiresnob` and `*hiresnobg`) in shop
 * New room filters: 'Non-Empty' and '1 Person'
 * Use any product with `*use <id>` command
     - Note: Only other users with modified clients will see clothes
