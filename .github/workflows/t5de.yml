@@ -13,7 +13,7 @@ jobs:
           $ENV:VERSION = $(cat VERSION)
           echo ("VERSION=" + $ENV:VERSION) >> $ENV:GITHUB_ENV
       - name: Setup Python 2.7
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '2.x'
       - name: Install Python Dependencies
