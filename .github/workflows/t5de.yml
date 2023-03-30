@@ -7,13 +7,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup IMVU Version
         run: |
           $ENV:VERSION = $(cat VERSION)
           echo ("VERSION=" + $ENV:VERSION) >> $ENV:GITHUB_ENV
       - name: Setup Python 2.7
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '2.x'
       - name: Install Python Dependencies
@@ -34,7 +34,7 @@ jobs:
         with:
           script-file: "./scripts/install.nsi"
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: T5DE-${{ env.VERSION }}.exe
           path: T5DE-${{ env.VERSION }}.exe
