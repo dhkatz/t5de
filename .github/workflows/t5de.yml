@@ -4,25 +4,28 @@ on: push
 
 jobs:
   build:
+    env:
+      T5DE_VERSION: ${{ github.ref_name }}
+      APP_VERSION: ${{ secrets.VERSION }}.${{ github.ref_name }}
+
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v3
-      - name: Setup IMVU Version
-        run: |
-          $ENV:VERSION = $(cat VERSION)
-          echo ("VERSION=" + $ENV:VERSION) >> $ENV:GITHUB_ENV
+
       - name: Setup Python 2.7
         uses: actions/setup-python@v4
         with:
           python-version: '2.x'
+          cache: 'pip'
       - name: Install Python Dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       - name: Patch Installer
         run: |
           python -m t5de
+
       - name: Install NSIS
         run: |
           iwr -useb get.scoop.sh -outfile 'install.ps1'
@@ -30,19 +33,21 @@ jobs:
           scoop update
           scoop bucket add extras
           scoop install nsis
+
       - name: Build Installer
         uses: joncloud/makensis-action@v3.3
         with:
           script-file: "./scripts/install.nsi"
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: T5DE-${{ env.VERSION }}.exe
-          path: T5DE-${{ env.VERSION }}.exe
+          name: T5DE-${{ env.APP_VERSION }}.exe
+          path: T5DE-${{ env.APP_VERSION }}.exe
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: T5DE-${{ env.VERSION }}.exe
+          files: T5DE-${{ env.APP_VERSION }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
