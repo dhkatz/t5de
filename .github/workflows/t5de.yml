@@ -6,6 +6,7 @@ jobs:
   build:
     env:
       T5DE_VERSION: ${{ github.ref_name }}
+      VERSION: ${{ vars.VERSION }}
       APP_VERSION: ${{ vars.VERSION }}.${{ github.ref_name }}
 
     runs-on: windows-latest
