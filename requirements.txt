@@ -1,4 +1,4 @@
 autogui==0.1.8
-requests==2.25.1
+requests==2.29.0
 uncompyle2==2.0.0
 typing==3.10.0.0
