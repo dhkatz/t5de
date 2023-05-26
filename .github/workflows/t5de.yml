@@ -30,7 +30,7 @@ jobs:
           scoop bucket add extras
           scoop install nsis
       - name: Build Installer
-        uses: joncloud/makensis-action@v3.3
+        uses: joncloud/makensis-action@v3.7
         with:
           script-file: "./scripts/install.nsi"
       - name: Upload Artifact
