@@ -15,14 +15,12 @@ jobs:
         uses: dhkatz/get-version-action@v3.0.0
 
       - name: Setup T5DE Version
-        if: ${{ steps.get_version.outputs.is-semver }}
+        if: ${{ steps.get_version.outputs.is-semver == 'true' }}
         run: echo "T5DE_VERSION=${{ steps.get_version.outputs.version-without-v }}" >> $env:GITHUB_ENV
 
       - name: Setup T5DE Version
-        if: ${{ !steps.get_version.outputs.is-semver }}
+        if: ${{ steps.get_version.outputs.is-semver == 'false' }}
         run: echo "T5DE_VERSION=${{ github.run_id }}" >> $env:GITHUB_ENV
-
-      - run: echo "${{ steps.get_version.outputs.is-semver }}"
 
       - name: Setup IMVU Version
         run: |
