@@ -2,10 +2,10 @@
 !include "MUI2.nsh"
 
 !define APPNAME "T5DE"
-!define IMVU_VERSION $%VERSION%
+!define IMVU_VERSION $%IMVU_VERSION%
 !define T5DE_VERSION $%T5DE_VERSION%
-
-!define APP_VERSION "${IMVU_VERSION}.${T5DE_VERSION}"
+!define APP_VERSION $%APP_VERSION%
+!define APP_VERSION_NUM "${T5DE_VERSION}.0"
 !define APP_EXE "IMVUClient.exe"
 
 !ifndef OUTDIR
@@ -79,8 +79,8 @@
 
 ; Versioning
 
-  VIProductVersion "${APP_VERSION}"
-  VIFileVersion "${APP_VERSION}"
+  VIProductVersion "${APP_VERSION_NUM}"
+  VIFileVersion "${APP_VERSION_NUM}"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APP_VERSION}"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "${APPNAME}"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${APPNAME}"
