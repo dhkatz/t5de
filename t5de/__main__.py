@@ -8,7 +8,7 @@ from . import Client
 
 
 def main():
-    with Client(os.getcwd(), os.getenv('VERSION')) as patcher:
+    with Client(os.getcwd(), os.getenv('IMVU_VERSION')) as patcher:
         patcher.download()
         patcher.install()
         patcher.copy()
