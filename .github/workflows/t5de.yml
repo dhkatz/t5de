@@ -10,11 +10,19 @@ jobs:
         with:
             fetch-depth: 0
 
-      - name: Setup T5DE Version
+      - name: Get Version From Ref
         id: get_version
         uses: dhkatz/get-version-action@v3.0.0
 
-      - run: echo "T5DE_VERSION=${{ steps.get_version.outputs.version-without-v }}" >> $env:GITHUB_ENV
+      - name: Setup T5DE Version
+        if: ${{ steps.get_version.outputs.is-semver }}
+        run: echo "T5DE_VERSION=${{ steps.get_version.outputs.version-without-v }}" >> $env:GITHUB_ENV
+
+      - name: Setup T5DE Version
+        if: ${{ !steps.get_version.outputs.is-semver }}
+        run: echo "T5DE_VERSION=${{ github.run_id }}" >> $env:GITHUB_ENV
+
+      - run: echo "${{ steps.get_version.outputs.is-semver }}"
 
       - name: Setup IMVU Version
         run: |
