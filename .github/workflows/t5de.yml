@@ -4,15 +4,31 @@ on: push
 
 jobs:
   build:
-    env:
-      T5DE_VERSION: ${{ github.ref_name }}
-      VERSION: ${{ vars.VERSION }}
-      APP_VERSION: ${{ vars.VERSION }}.${{ github.ref_name }}
-
     runs-on: windows-latest
-
     steps:
       - uses: actions/checkout@v3
+        with:
+            fetch-depth: 0
+
+      - name: Setup T5DE Version
+        id: get_version
+        uses: battila7/get-version-action@v2.2.1
+
+      - run: echo "T5DE_VERSION=${{ steps.get_version.outputs.version-without-v }}" >> $env:GITHUB_ENV
+
+      - name: Setup IMVU Version
+        run: |
+          $ENV:IMVU_VERSION = $(cat VERSION)
+          echo ("IMVU_VERSION=" + $ENV:IMVU_VERSION) >> $ENV:GITHUB_ENV
+
+      - name: Setup App Version
+        run: echo "APP_VERSION=${{ env.IMVU_VERSION }}-${{ env.T5DE_VERSION }}" >> $env:GITHUB_ENV
+
+      - name: Echo Versions
+        run: |
+          echo "T5DE_VERSION=${{ env.T5DE_VERSION }}"
+          echo "IMVU_VERSION=${{ env.IMVU_VERSION }}"
+          echo "APP_VERSION=${{ env.APP_VERSION }}"
 
       - name: Setup Python 2.7
         uses: actions/setup-python@v4
@@ -44,7 +60,7 @@ jobs:
           path: T5DE-${{ env.APP_VERSION }}.exe
       - name: Upload Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        if: github.ref_type == 'tag'
         with:
           files: T5DE-${{ env.APP_VERSION }}.exe
         env:
