@@ -547,5 +547,6 @@ pip-selfcheck.json
 ### Custom
 IMVUClient
 imvuContent
+library
 *.exe
 
