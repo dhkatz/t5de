@@ -7,7 +7,7 @@ class Context:
     The context stores the current state of the patching process
     """
 
-    def __init__(self, cwd, replacement=None):
+    def __init__(self, cwd, replacement=None, dry_run=False):
         """
         Initialize the context
         :param str cwd:
@@ -15,6 +15,7 @@ class Context:
         """
         self.cwd = cwd
         self.replacement = replacement
+        self.dry_run = dry_run
 
         self.path = ""  # type: str
         self.source = []  # type: List[str]

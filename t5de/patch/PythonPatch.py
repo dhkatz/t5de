@@ -23,12 +23,13 @@ class PythonPatch(Patch):
 
             print('DECOMPILING: {}'.format(p.path))
 
-            with open(os.path.join(context.cwd, p.path), "w") as f:
-                decompile_file(
-                    os.path.join(context.cwd, os.path.splitext(p.path)[0] + '.pyo'),
-                    f,
-                    showasm=False
-                )
+            if not context.dry_run:
+                with open(os.path.join(context.cwd, p.path), "w") as f:
+                    decompile_file(
+                        os.path.join(context.cwd, os.path.splitext(p.path)[0] + '.pyo'),
+                        f,
+                        showasm=False
+                    )
 
     def cleanup(self, context):
         for p in self.replacements:
@@ -40,15 +41,17 @@ class PythonPatch(Patch):
 
             print('COMPILING: {}'.format(p.path))
 
-            compile_file(
-                os.path.join(context.cwd, p.path),
-                os.path.join(context.cwd, os.path.splitext(p.path)[0] + '.pyo'),
-                '-o',
-                doraise=True
-            )
+            if not context.dry_run:
+                compile_file(
+                    os.path.join(context.cwd, p.path),
+                    os.path.join(context.cwd, os.path.splitext(p.path)[0] + '.pyo'),
+                    '-o',
+                    doraise=True
+                )
 
             print('CLEANING: {}'.format(p.path))
 
-            filepath = os.path.join(context.cwd, p.path)
-            if os.path.isfile(filepath):
-                os.remove(filepath)
+            if not context.dry_run:
+                filepath = os.path.join(context.cwd, p.path)
+                if os.path.isfile(filepath):
+                    os.remove(filepath)
