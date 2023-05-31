@@ -13,6 +13,7 @@ jobs:
       - name: Get Version
         id: version
         uses: ietf-tools/semver-action@v1
+        if: github.ref_type != 'tag'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
@@ -22,8 +23,14 @@ jobs:
         uses: dhkatz/get-version-action@v3.0.0
 
       - name: Setup T5DE Version
+        if: github.ref_type != 'tag'
         run: |
-          echo "T5DE_VERSION=${{ github.ref_type == 'tag' && steps.version.outputs.current || steps.version.outputs.nextStrict }}${{ steps.semver_version.outputs.is-semver == 'false' && format('+{0}-{1}', github.ref_name, github.run_id) || '' }}" >> $env:GITHUB_ENV
+          echo "T5DE_VERSION=${{ steps.version.outputs.nextStrict }}${{ format('+{0}-{1}', github.ref_name, github.run_id) }}" >> $env:GITHUB_ENV
+
+      - name: Setup T5DE Version
+        if: github.ref_type == 'tag'
+        run: |
+          echo "T5DE_VERSION=${{ steps.semver_version.outputs.version-without-v }}" >> $env:GITHUB_ENV
 
       - name: Echo T5DE Version
         run: echo "T5DE_VERSION=${{ env.T5DE_VERSION }}"
