@@ -64,7 +64,10 @@ class Context:
         """
         if newline and not text.endswith("\n"):
             text += "\n"
-        self.output.append("{}{}".format("    " * indent, text))
+        if indent < 0:
+            self.output.append(text.replace("    ", "", -indent))
+        else:
+            self.output.append("{}{}".format("    " * indent, text))
 
     def seek(self, index, absolute=False):
         """
