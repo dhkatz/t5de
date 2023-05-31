@@ -17,7 +17,7 @@ def main():
         patcher.download()
         patcher.install()
         patcher.copy()
-        patcher.patch(patchers=[InterfacePatcher, PythonPatcher, ChecksumPatcher])
+        patcher.patch(patchers=[InterfacePatcher, PythonPatcher, ChecksumPatcher], dry_run=False)
 
 
 if __name__ == '__main__':

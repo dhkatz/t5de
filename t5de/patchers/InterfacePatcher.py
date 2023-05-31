@@ -44,4 +44,4 @@ class InterfacePatcher(Patcher):
         os.remove(os.path.join(self.cwd, 'IMVUClient/ui/chrome', 'imvuContent.jar'))
         shutil.move(os.path.join(self.cwd, 'imvuContent.jar'), os.path.join(self.cwd, 'IMVUClient/ui/chrome'))
 
-        # shutil.rmtree(os.path.join(self.cwd, 'imvuContent'))
+        shutil.rmtree(os.path.join(self.cwd, 'imvuContent'))

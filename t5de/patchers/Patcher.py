@@ -46,20 +46,19 @@ class Patcher(object):
         :param bool dry_run:
         :return:
         """
-        context = Context(self.cwd)
+        context = Context(self.cwd, dry_run=dry_run)
         patch.setup(context)
         for replacement in patch.replacements:
             with context.open(replacement):
-                Patcher._patch_replacement(patch, context, dry_run)
+                Patcher._patch_replacement(patch, context)
         patch.cleanup(context)
 
     @staticmethod
-    def _patch_replacement(patch, context, dry_run=False):
+    def _patch_replacement(patch, context):
         """
         Apply a patch to a file
         :param Patch patch:
         :param Context context:
-        :param bool dry_run:
         :return:
         """
         replacement = context.replacement
@@ -67,9 +66,13 @@ class Patcher(object):
             if re.search(replacement.pattern, line):
                 print('PATCHING: {} ({})'.format(replacement.path, replacement.name))
 
-                context.pattern = replacement.name
-                patch.apply(context)
-                context.pattern = None
+                if not context.dry_run:
+                    context.pattern = replacement.name
+                    patch.apply(context)
+                    context.pattern = None
+                else:
+                    context.write(context.line)
+
                 context.skip(1)
 
                 print('PATCHED: {} ({})'.format(replacement.path, replacement.name))
