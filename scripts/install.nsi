@@ -78,8 +78,8 @@
 
 ; Versioning
 
-  VIProductVersion "${T5DE_VERSION}"
-  VIFileVersion "${T5DE_VERSION}"
+  VIProductVersion "${IMVU_VERSION}.0.0"
+  VIFileVersion "${IMVU_VERSION}.0.0"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APP_VERSION}"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "${APPNAME}"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${APPNAME}"
