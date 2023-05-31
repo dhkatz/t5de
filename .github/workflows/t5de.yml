@@ -14,7 +14,7 @@ jobs:
         id: version
         uses: ietf-tools/semver-action@v1
         with:
-          token: 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
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
 
       - name: Get Semver Version
