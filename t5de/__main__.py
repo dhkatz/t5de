@@ -8,7 +8,12 @@ from . import Client
 
 
 def main():
-    with Client(os.getcwd(), os.getenv('IMVU_VERSION')) as patcher:
+    IMVU_VERSION = os.getenv('IMVU_VERSION')
+    T5DE_VERSION = os.getenv('T5DE_VERSION')
+
+    print('Running T5DE patcher v%s for IMVU v%s' % (T5DE_VERSION, IMVU_VERSION))
+
+    with Client(os.getcwd(), IMVU_VERSION) as patcher:
         patcher.download()
         patcher.install()
         patcher.copy()
