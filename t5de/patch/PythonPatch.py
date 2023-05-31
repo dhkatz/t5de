@@ -26,7 +26,8 @@ class PythonPatch(Patch):
             with open(os.path.join(context.cwd, p.path), "w") as f:
                 decompile_file(
                     os.path.join(context.cwd, os.path.splitext(p.path)[0] + '.pyo'),
-                    f
+                    f,
+                    showasm=False
                 )
 
     def cleanup(self, context):

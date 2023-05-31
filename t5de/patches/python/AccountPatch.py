@@ -12,17 +12,17 @@ class AccountPatch(PythonPatch):
     def patch(self, context):
         if context.pattern == "ENABLE_CREATOR":
             context.write(context.line)
-            context.write("        return True\n")
+            context.write("return True\n", indent=2)
             context.seek(1)
         elif context.pattern == "DISABLE_CLIENT_ADS":
             context.write(context.line)
-            context.write("        return False\n")
+            context.write("return False\n", indent=2)
             context.seek(5)
         elif context.pattern == "DISABLE_ROOM_ADS":
             context.write(context.line)
-            context.write("        return False\n")
+            context.write("return False\n", indent=2)
             context.seek(3)
         else:
             context.write(context.line)
-            context.write("        return False\n")
+            context.write("return False\n", indent=2)
             context.seek(1)
