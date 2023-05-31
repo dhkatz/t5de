@@ -32,16 +32,13 @@ jobs:
         run: |
           echo "T5DE_VERSION=${{ steps.semver_version.outputs.version-without-v }}" >> $env:GITHUB_ENV
 
-      - name: Echo T5DE Version
-        run: echo "T5DE_VERSION=${{ env.T5DE_VERSION }}"
-
       - name: Setup IMVU Version
         run: |
           $ENV:IMVU_VERSION = $(cat VERSION)
           echo ("IMVU_VERSION=" + $ENV:IMVU_VERSION) >> $ENV:GITHUB_ENV
 
       - name: Setup App Version
-        run: echo "APP_VERSION=${{ env.IMVU_VERSION }}-${{ env.T5DE_VERSION }}" >> $env:GITHUB_ENV
+        run: echo "APP_VERSION=${{ env.T5DE_VERSION }}-${{ env.IMVU_VERSION }}" >> $env:GITHUB_ENV
 
       - name: Echo Versions
         run: |
@@ -77,6 +74,7 @@ jobs:
         with:
           name: T5DE-${{ env.APP_VERSION }}.exe
           path: T5DE-${{ env.APP_VERSION }}.exe
+
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         if: github.ref_type == 'tag'
