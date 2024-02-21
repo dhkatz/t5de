@@ -1,4 +1,5 @@
 autogui==0.1.8
-requests==2.25.1
-uncompyle6 @ git+https://github.com/rocky/python-uncompyle6.git@python-2.4
+requests==2.27.1
+xdis @ git+https://github.com/rocky/python-xdis.git@python-2.4-to-2.7
+uncompyle6 @ git+https://github.com/rocky/python-uncompyle6.git@python-2.4-to-2.7
 typing==3.10.0.0
