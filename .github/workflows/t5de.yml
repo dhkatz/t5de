@@ -48,9 +48,9 @@ jobs:
           echo "APP_VERSION=${{ env.APP_VERSION }}"
 
       - name: Setup Python 2.7
-        uses: actions/setup-python@v4
+        uses: LizardByte/setup-python-action@master
         with:
-          python-version: '2.x'
+          python-version: '2.7'
       - run: pip install -r requirements.txt
 
       - name: Patch Installer
