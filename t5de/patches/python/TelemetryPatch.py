@@ -13,8 +13,8 @@ class TelemetryPatch(PythonPatch):
         self.register('TELEMETRY_6', 'main/bugzilla_submit.py', r'submitImvuBug')
         self.register('TELEMETRY_7', 'main/clientapp.py', r'sendLogsOnLogin')
         self.register('TELEMETRY_8', 'main/SendIMVULogs.py', r'def send')
-        self.register('TELEMETRY_9', 'main/SendIMVULogs.py', r'def m')
-        self.register('TELEMETRY_10', 'imvu/account.py', r'sp\.deviceFingerprint\(\)')
+        self.register('TELEMETRY_9', 'main/SendIMVULogs.py', r'def send_internal')
+        self.register('TELEMETRY_10', 'imvu/account.py', r'fingerprint\.deviceFingerprint\(\)')
 
     def patch(self, context):
         if context.pattern == 'TELEMETRY_1':
