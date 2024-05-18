@@ -3,3 +3,4 @@ requests==2.27.1
 xdis
 uncompyle6
 typing==3.10.0.0
+python-dotenv==0.18.0

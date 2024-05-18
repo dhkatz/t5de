@@ -2,6 +2,7 @@
 
 import os
 import sys
+import dotenv
 
 from .patchers import InterfacePatcher, PythonPatcher, ChecksumPatcher
 from . import Client
@@ -21,4 +22,5 @@ def main():
 
 
 if __name__ == '__main__':
+    dotenv.load_dotenv()
     sys.exit(main())
