@@ -3,5 +3,5 @@ requests==2.27.1
 xdis
 uncompyle6
 typing==3.10.0.0
-python-dotenv==0.18.0
+python-dotenv==1.0.1
 beautifulsoup4==4.9.3
