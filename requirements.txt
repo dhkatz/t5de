@@ -1,5 +1,5 @@
 autogui==0.1.8
-requests==2.27.1
+requests==2.32.2
 xdis
 uncompyle6
 typing==3.10.0.0
