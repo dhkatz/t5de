@@ -55,7 +55,7 @@ jobs:
 
       - name: Patch Installer
         run: |
-          python -m t5de
+          python -m t5de --patch
 
       - name: Install NSIS
         run: |
