@@ -15,6 +15,7 @@ class TelemetryPatch(PythonPatch):
         self.register('TELEMETRY_8', 'main/SendIMVULogs.py', r'def send')
         self.register('TELEMETRY_9', 'main/SendIMVULogs.py', r'def send_internal')
         self.register('TELEMETRY_10', 'imvu/account.py', r'fingerprint\.deviceFingerprint\(\)')
+        self.register('TELEMETRY_11', 'imvu/log.py', r'def getRecords')
 
     def patch(self, context):
         if context.pattern == 'TELEMETRY_1':
@@ -50,3 +51,6 @@ class TelemetryPatch(PythonPatch):
             fingerprint = 'RlB2NFVFTTZWMmx1Wkc5M2N6b3lMalV1TVM0ekxqQTZPam89'
             context.write('data = base64.b64decode(\'{}\').decode(\'utf-8\')'.format(fingerprint), indent=2)
             context.write('si[\'bluecava_fingerprint\'] = data', indent=2)
+        elif context.pattern == 'TELEMETRY_11':
+            context.write(context.line)
+            context.write('self.clearRecords()', indent=2)
