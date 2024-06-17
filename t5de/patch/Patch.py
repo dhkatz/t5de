@@ -1,3 +1,5 @@
+from abc import ABCMeta
+
 from typing import List, NamedTuple
 from .. import Context
 
@@ -5,6 +7,7 @@ Replacement = NamedTuple("Replacement", [('name', str), ('pattern', str), ('path
 
 
 class Patch(object):
+    __metaclass__ = ABCMeta
     """
     Base class for patches, a collection of replacements to apply to a file or files.
     """

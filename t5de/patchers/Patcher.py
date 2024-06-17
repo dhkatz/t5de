@@ -1,10 +1,12 @@
 import re
+from abc import ABCMeta, abstractmethod
 
 from .. import Context
 from ..patch import Patch
 
 
 class Patcher(object):
+    __metaclass__ = ABCMeta
     """
     Base class for patchers
 
@@ -23,6 +25,7 @@ class Patcher(object):
         self.cwd = cwd
         self.patches = patches
 
+    @abstractmethod
     def setup(self):
         raise NotImplementedError
 
@@ -30,6 +33,7 @@ class Patcher(object):
         for patch in self.patches:
             self._patch(patch, dry_run)
 
+    @abstractmethod
     def cleanup(self):
         raise NotImplementedError
 

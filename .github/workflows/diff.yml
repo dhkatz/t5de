@@ -1,0 +1,28 @@
+name: Diff Checker
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+# Check if any previous run
+
+jobs:
+    diff:
+        runs-on: windows-latest
+        steps:
+        - uses: actions/checkout@v4
+          with:
+              fetch-depth: 0
+        - name: Setup Python 2.7
+          uses: LizardByte/setup-python-action@master
+          with:
+            python-version: '2.7'
+        - run: pip install -r requirements.txt
+        - name: Setup IMVU Version
+          run: |
+            $ENV:IMVU_VERSION = $(cat VERSION)
+            echo ("IMVU_VERSION=" + $ENV:IMVU_VERSION) >> $ENV:GITHUB_ENV
+        - name: Echo Versions
+          run: |
+            echo "IMVU_VERSION=${{ env.IMVU_VERSION }}"
+        - run: python -m t5de --diff
