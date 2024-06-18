@@ -13,16 +13,44 @@ jobs:
         - uses: actions/checkout@v4
           with:
               fetch-depth: 0
+
+        - name: Get Version
+          id: version
+          uses: ietf-tools/semver-action@v1
+          if: github.ref_type != 'tag'
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            branch: master
+            noVersionBumpBehavior: current
+
+        - name: Get Semver Version
+          id: semver_version
+          uses: dhkatz/get-version-action@v3.0.0
+
+        - name: Setup T5DE Version
+          if: github.ref_type != 'tag'
+          run: |
+            echo "T5DE_VERSION=${{ steps.version.outputs.nextStrict }}${{ format('+{0}-{1}', github.ref_name, github.run_id) }}" >> $env:GITHUB_ENV
+
+        - name: Setup T5DE Version
+          if: github.ref_type == 'tag'
+          run: |
+            echo "T5DE_VERSION=${{ steps.semver_version.outputs.version-without-v }}" >> $env:GITHUB_ENV
+
         - name: Setup Python 2.7
           uses: LizardByte/setup-python-action@master
           with:
             python-version: '2.7'
         - run: pip install -r requirements.txt
+
         - name: Setup IMVU Version
           run: |
             $ENV:IMVU_VERSION = $(cat VERSION)
             echo ("IMVU_VERSION=" + $ENV:IMVU_VERSION) >> $ENV:GITHUB_ENV
+
         - name: Echo Versions
           run: |
+            echo "T5DE_VERSION=${{ env.T5DE_VERSION }}"
             echo "IMVU_VERSION=${{ env.IMVU_VERSION }}"
+
         - run: python -m t5de --diff
