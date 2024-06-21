@@ -22,6 +22,7 @@ jobs:
             token: ${{ secrets.GITHUB_TOKEN }}
             branch: master
             noVersionBumpBehavior: current
+            noNewCommitBehavior: current
 
         - name: Get Semver Version
           id: semver_version
