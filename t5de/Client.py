@@ -111,6 +111,12 @@ class Client:
             Client.CLIENT_PATH, os.path.join(self.cwd, 'IMVUClient'),
             ignore=shutil.ignore_patterns('*.lock')
         )
+        
+        print('COPYING: devicefingerprint.pyd')
+        
+        shutil.copy(
+            os.path.join(self.cwd, 'scripts/devicefingerprint.pyd'), os.path.join(self.cwd, 'IMVUClient')
+        )
 
     def patch(self, patchers, dry_run=False):
         """
