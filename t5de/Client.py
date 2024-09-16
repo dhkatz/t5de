@@ -88,10 +88,12 @@ class Client:
             attempts += 1
             try:
                 if autogui.exists('Update Available'):
-                    autogui.setWindow('Update Available')
-                    autogui.click('Close', 0, 4)
+                    print('SKIPPING: UPDATE AVAILABLE PROMPT')
+                    autogui.setWindow('Update Available', timeout=4)
+                    autogui.click('Close', timeout=4)
+                    time.sleep(5)
                 autogui.setWindow('IMVU Login')
-                autogui.click('Close', 0, 4)
+                autogui.click('Close', timeout=4)
                 break
             except Exception:
                 if attempts > 5:
@@ -193,7 +195,11 @@ class Client:
 
         executable = os.path.join(self.cwd, 'InstallIMVU_%s.exe' % version)
         if os.path.isfile(executable):
-            os.remove(executable)
+            try:
+                os.remove(executable)
+            except Exception as e:
+                print('ERROR: {}'.format(e))
+                pass
 
     def _latest_version(self):
         """
