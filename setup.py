@@ -8,9 +8,16 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(HERE, 'README.md')) as f:
     README = f.read()
 
+execfile('t5de/version.py')
+
+# noinspection PyUnresolvedReferences
+version = __version__
+
+print('Running T5DE patcher setup v%s' % version)
+
 setup(
     name='T5DE',
-    version=os.getenv('T5DE_VERSION', '1.0.0'),
+    version=version,
     description='A modified IMVU client that unlocks useful features.',
     long_description=README,
     long_description_content_type='text/markdown',
