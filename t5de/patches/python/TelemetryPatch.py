@@ -16,6 +16,10 @@ class TelemetryPatch(PythonPatch):
         self.register('TELEMETRY_9', 'main/SendIMVULogs.py', r'def send_internal')
         self.register('TELEMETRY_10', 'imvu/devicefingerprint.py', r'import')
         self.register('TELEMETRY_11', 'imvu/log.py', r'def getRecords')
+        self.register('TELEMETRY_12', 'imvu/mode/HomeMode.py', r'def loadFPEdgeUrl')
+        self.register('TELEMETRY_13', 'imvu/account.py', r'def getUpdateInfo')
+        self.register('TELEMETRY_14', 'imvu/account.py', r'self\.__factReporter\.recordFact')
+        self.register('TELEMETRY_15', 'imvu/account.py', r'self\.__factReporter\.recordFactOnlyOnce')
 
     def patch(self, context):
         if context.pattern == 'TELEMETRY_1':
@@ -63,3 +67,17 @@ class TelemetryPatch(PythonPatch):
         elif context.pattern == 'TELEMETRY_11':
             context.write(context.line)
             context.write('self.clearRecords()', indent=2)
+        elif context.pattern == 'TELEMETRY_12':
+            context.write(context.line)
+            context.skip(5)
+            context.write('pass', indent=2)
+        elif context.pattern == 'TELEMETRY_13':
+            context.write('def shouldRecordFact(self, fact_type):', indent=1)
+            context.write('__facts = ["NUI:CreatorMode", "NUI:ProductEditMode", "Create Mode Edit Pid", "Create Mode Derive Pid", "Create Mode Open Chkn", "Create Mode Open Cfl"]', indent=2)
+            context.write('if (fact_type in __facts) and not self.chkCreator():', indent=2)
+            context.write('return False', indent=3)
+            context.write('return True\n\n', indent=2)
+            context.write(context.line)
+        elif context.pattern in ('TELEMETRY_14', 'TELEMETRY_15'):
+            context.write('if self.shouldRecordFact(fact_type):', indent=2)
+            context.write(context.line, indent=1)
