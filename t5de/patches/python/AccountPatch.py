@@ -13,7 +13,7 @@ class AccountPatch(PythonPatch):
         if context.pattern == "ENABLE_CREATOR":
             context.write(context.line)
             context.write("return True\n", indent=2)
-            context.seek(1)
+            context.write(context.line.replace("isCreator", "chkCreator"))
         elif context.pattern == "DISABLE_CLIENT_ADS":
             context.write(context.line)
             context.write("return False\n", indent=2)
