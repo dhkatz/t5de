@@ -72,7 +72,7 @@ jobs:
           script-file: "./scripts/install.nsi"
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: T5DE-${{ env.APP_VERSION }}.exe
           path: T5DE-${{ env.APP_VERSION }}.exe
