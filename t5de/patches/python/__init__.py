@@ -1,5 +1,4 @@
 from AccountPatch import AccountPatch
 from TelemetryPatch import TelemetryPatch
-from ProductLoaderPatch import ProductLoaderPatch
 from WindowsPatch import WindowsPatch
 from EnablePhotoModePatch import EnablePhotoModePatch
